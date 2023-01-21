@@ -3,17 +3,18 @@ import Taskform from "./pages/Taskform";
 import TaskPage from "./pages/TaskPage";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
+import { TaskContextProvider } from "./context/TaskContext";
 
 const App = () => {
   return (
-    <>
-<Navbar/>    
+    <TaskContextProvider>
+      <Navbar />
       <Routes>
         <Route path="/" element={<TaskPage />} />
         <Route path="/new" element={<Taskform />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </TaskContextProvider>
   );
 };
 

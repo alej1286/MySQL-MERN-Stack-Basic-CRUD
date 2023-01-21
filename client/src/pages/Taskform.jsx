@@ -1,7 +1,11 @@
 import { Form, Formik } from "formik";
+import { useContext } from "react";
 import { createTaskRequest } from "../api/tasks.api";
+import { TaskContext } from "../context/TaskContext";
 
 const Taskform = () => {
+  const { text } = useContext(TaskContext);
+  console.log(text);
   return (
     <div>
       <Formik
@@ -38,7 +42,7 @@ const Taskform = () => {
             ></textarea>
 
             <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Sending...":"Emviar"}
+              {isSubmitting ? "Sending..." : "Emviar"}
             </button>
           </Form>
         )}
