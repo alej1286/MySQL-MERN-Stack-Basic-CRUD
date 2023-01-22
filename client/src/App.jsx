@@ -3,7 +3,7 @@ import Taskform from "./pages/Taskform";
 import TaskPage from "./pages/TaskPage";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
-import { TaskContextProvider } from "./context/TaskContext";
+import { TaskContextProvider } from "./context/TaskProvider";
 
 const App = () => {
   return (

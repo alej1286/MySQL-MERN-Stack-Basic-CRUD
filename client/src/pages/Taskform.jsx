@@ -1,24 +1,21 @@
 import { Form, Formik } from "formik";
-import { useContext } from "react";
-import { createTaskRequest } from "../api/tasks.api";
-import { TaskContext } from "../context/TaskContext";
+import { useTasks } from "../context/TaskProvider";
+
+
 
 const Taskform = () => {
-  const { text } = useContext(TaskContext);
-  console.log(text);
+  const { createTask } = useTasks();
+  //console.log(text,x);
+  
   return (
     <div>
       <Formik
         initialValues={{ title: "", description: "" }}
         onSubmit={async (values, actions) => {
-          try {
-            const response = await createTaskRequest(values);
-            console.log(response);
-            actions.resetForm();
-          } catch (error) {
-            console.log(error);
-          }
+          
+          createTask(values)
           console.log(values);
+          actions.resetForm();
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (

@@ -1,14 +1,11 @@
 import React from "react";
 import { deleteTaskRequest } from "../api/tasks.api";
+import { useTasks } from "../context/TaskProvider";
 
 const TaskCard = ({ task }) => {
-  const handleDelete = async (id) => {
-    try {
-      const response = await deleteTaskRequest(id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+  const {deleteTask} = useTasks();
+  
 
   return (
     <div>
@@ -19,7 +16,7 @@ const TaskCard = ({ task }) => {
         <span>{task.createAt}</span>
         <button
           onClick={() => {
-            handleDelete(task.id);
+            deleteTask(task.id);
           }}
         >
           Delete
