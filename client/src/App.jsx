@@ -12,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<TaskPage />} />
         <Route path="/new" element={<Taskform />} />
+        <Route path="/edit/:id" element={<Taskform />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </TaskContextProvider>

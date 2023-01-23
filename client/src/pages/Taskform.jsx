@@ -1,21 +1,46 @@
 import { Form, Formik } from "formik";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTasks } from "../context/TaskProvider";
 
-
-
 const Taskform = () => {
-  const { createTask } = useTasks();
-  //console.log(text,x);
-  
+  const { createTask, getTask, updateTask } = useTasks();
+  const [task, setTask] = useState({
+    title: ``,
+    description: ``,
+  });
+  const params = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadTask = async () => {
+      if (params.id) {
+        const task = await getTask(params.id);
+        setTask({
+          title: task.title,
+          description: task.description,
+        });
+      }
+    };
+    loadTask();
+  }, []);
+
   return (
     <div>
+      <h1>{params.id ? `Update Task` : `Create Task`}</h1>
       <Formik
-        initialValues={{ title: "", description: "" }}
+        initialValues={task}
+        enableReinitialize={true}
         onSubmit={async (values, actions) => {
-          
-          createTask(values)
-          console.log(values);
-          actions.resetForm();
+          if (params.id) {
+            await updateTask(params.id, values);
+            setTask(values);
+          } else {
+            await createTask(values);
+            navigate(`/`);
+            //actions.resetForm();
+          }
         }}
       >
         {({ handleChange, handleSubmit, values, isSubmitting }) => (
@@ -39,7 +64,7 @@ const Taskform = () => {
             ></textarea>
 
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Emviar"}
+              {isSubmitting ? "Sending..." : "Send"}
             </button>
           </Form>
         )}
