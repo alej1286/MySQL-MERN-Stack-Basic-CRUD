@@ -1,3 +1,4 @@
+//MySQL -----------------------------------------------------
 //create DB
 docker run --name mymysql -e MYSQL_ROOT_PASSWORD=123456789 -e MYSQL_DATABASE=tasksdb -p 3306:3306 -d mysql
 
@@ -6,4 +7,22 @@ docker run --name mymysql -e MYSQL_ROOT_PASSWORD=123456789 -e MYSQL_DATABASE=tas
 docker exec -it mymysql bash
 
 //connect to mysql db
-mysql -u root --password
+mysql -u root --password 
+
+
+
+//MongoDB-----------------------------------------------------
+docker network create mongo-net
+docker run --detach --network mongo-net --name mongo-server \
+    --env MONGO_INITDB_ROOT_USERNAME=admin \
+    --env MONGO_INITDB_ROOT_PASSWORD=pass \
+    --env MONGO_INITDB_ROOT_DATABASE=admin \
+    --volume mongo-data:/data/db \
+    --publish 27017:27017 \
+    mongo:5.0.6
+
+// connect to db container
+docker exec -it mongo-server bash
+
+//connect to mongoDB db
+mongosh "mongodb://admin:pass@localhost:27017"
