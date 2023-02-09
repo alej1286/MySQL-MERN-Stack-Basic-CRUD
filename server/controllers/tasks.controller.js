@@ -1,12 +1,14 @@
-import { pool } from "../db.js";
+import taskModel from "../model/taskModel.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const [result] = await pool.query(
-      `SELECT * FROM tasks ORDER BY createAt ASC`
-    );
-    console.log(result);
-    res.json(result);
+    taskModel.find((error, data) => {
+      if (error) {
+        return error;
+      } else {
+        res.json(data);
+      }
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -14,14 +16,13 @@ export const getTasks = async (req, res) => {
 
 export const getTask = async (req, res) => {
   try {
-    const [result] = await pool.query(`SELECT * FROM tasks WHERE id=?`, [
-      req.params.id,
-    ]);
-
-    if (result.length === 0)
-      return res.status(404).json({ message: "Task not Found" });
-
-    res.json(result[0]);
+    taskModel.findById(req.params.id, (error, data) => {
+      if (error) {
+        return error;
+      } else {
+        res.json(data);
+      }
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -29,17 +30,12 @@ export const getTask = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const [result] = await pool.query(
-      `INSERT INTO tasks(title, description) VALUES (?,?)`,
-      [title, description]
-    );
-    console.log(result);
-
-    res.json({
-      id: result.insertId,
-      title,
-      description,
+    taskModel.create(req.body, (error, data) => {
+      if (error) {
+        return error;
+      } else {
+        res.json(data);
+      }
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -48,13 +44,20 @@ export const createTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const { title, description } = req.body;
-    const [result] = await pool.query(`UPDATE tasks SET ? WHERE id=?`, [
-      req.body,
+    taskModel.findByIdAndUpdate(
       req.params.id,
-    ]);
-
-    return res.json(result);
+      {
+        $set: req.body,
+      },
+      (error, data) => {
+        if (error) {
+          return error;
+        } else {
+          res.json(data);
+          console.log("task successfully updated!");
+        }
+      }
+    );
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -62,14 +65,15 @@ export const updateTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
   try {
-    const [result] = await pool.query(`DELETE FROM tasks WHERE id=?`, [
-      req.params.id,
-    ]);
-
-    if (result.affectedRows === 0)
-      return res.status(404).json({ message: "Task not Found" });
-
-    return res.sendStatus(204);
+    taskModel.findByIdAndRemove(req.params.id, (error, data) => {
+      if (error) {
+        return error;
+      } else {
+        res.status(200).json({
+          msg: data,
+        });
+      }
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

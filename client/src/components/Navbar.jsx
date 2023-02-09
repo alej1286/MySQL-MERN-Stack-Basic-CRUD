@@ -3,7 +3,7 @@ const Navbar = () => {
   return (
     <div className="bg-neutral-700 flex justify-between px-20 py-2">
       <Link className="text-white font-bold" to="/">
-        <h1>React PostgreSQL</h1>
+        <h1>React MongoDB</h1>
       </Link>
       <ul className="flex gap-x-1">
         <li>
