@@ -27,48 +27,70 @@ const Taskform = () => {
   }, []);
 
   return (
-    <div>
-      <h1>{params.id ? `Update Task` : `Create Task`}</h1>
-      <Formik
-        initialValues={task}
-        enableReinitialize={true}
-        onSubmit={async (values, actions) => {
-          if (params.id) {
-            await updateTask(params.id, values);
-            setTask(values);
-          } else {
-            await createTask(values);
-            navigate(`/`);
-            //actions.resetForm();
-          }
-        }}
-      >
-        {({ handleChange, handleSubmit, values, isSubmitting }) => (
-          <Form onSubmit={handleSubmit}>
-            <label>title</label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Write a title"
-              onChange={handleChange}
-              value={values.title}
-            />
-
-            <label>description</label>
-            <textarea
-              name="description"
-              rows="3"
-              placeholder="Write a description"
-              onChange={handleChange}
-              value={values.description}
-            ></textarea>
-
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Send"}
-            </button>
-          </Form>
-        )}
-      </Formik>
+    <div className="max-w-5xl mx-auto px-6 sm:px-6 lg:px-8 mb-12">
+      <div className="dark:bg-gray-900 bg-slate-300 w-full shadow rounded p-8 sm:p-12">
+        <p className="text-3xl font-bold leading-7 text-center dark:text-white text-gray-700">
+          {params.id ? `Update Task` : `Create Task`}
+        </p>
+        <Formik
+          initialValues={task}
+          enableReinitialize={true}
+          onSubmit={async (values, actions) => {
+            if (params.id) {
+              await updateTask(params.id, values);
+              setTask(values);
+            } else {
+              await createTask(values);
+              navigate(`/`);
+              //actions.resetForm();
+            }
+          }}
+        >
+          {({ handleChange, handleSubmit, values, isSubmitting }) => (
+            <Form onSubmit={handleSubmit}>
+              <div className="md:flex items-center mt-8">
+                <div className="w-full flex flex-col">
+                  <label className="font-semibold leading-none dark:text-gray-300">
+                    Title
+                  </label>
+                  <input
+                    className="leading-none dark:text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 border-0 dark:bg-gray-800 rounded bg-gray-200 "
+                    type="text"
+                    name="title"
+                    placeholder="Write a title"
+                    onChange={handleChange}
+                    value={values.title}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="w-full flex flex-col mt-8">
+                  <label className="font-semibold leading-none dark:text-gray-300">
+                    Description
+                  </label>
+                  <textarea
+                    className="h-40 text-base leading-none dark:text-gray-50 p-3 focus:outline-none focus:border-blue-700 mt-4 dark:bg-gray-800 border-0 rounded bg-gray-200"
+                    name="description"
+                    rows="3"
+                    placeholder="Write a description"
+                    onChange={handleChange}
+                    value={values.description}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="flex items-center justify-center w-full">
+                <button
+                  className="mt-9 font-semibold leading-none text-white py-4 px-10 bg-blue-700 rounded hover:bg-blue-600 focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 focus:outline-none"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 };
