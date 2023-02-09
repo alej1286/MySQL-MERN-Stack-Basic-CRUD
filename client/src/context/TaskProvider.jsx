@@ -28,7 +28,7 @@ export const TaskContextProvider = ({ children }) => {
   const deleteTask = async (id) => {
     try {
       const response = await deleteTaskRequest(id);
-      setTasks(tasks.filter((task) => task.id !== id));
+      setTasks(tasks.filter((task) => task._id !== id));
     } catch (error) {
       console.log(error);
     }
@@ -64,14 +64,14 @@ export const TaskContextProvider = ({ children }) => {
   };
   const toggleTaskDone = async (id) => {
     try {
-      const taskFound = tasks.find((task) => task.id === id);
+      const taskFound = tasks.find((task) => task._id === id);
       const response = await toggleTaskDoneRequest(
         id,
         taskFound.done === 0 ? true : false
       );
       setTasks(
         tasks.map((task) =>
-          task.id === id ? { ...task, done: !task.done } : task
+          task._id === id ? { ...task, done: !task.done } : task
         )
       );
     } catch (error) {
