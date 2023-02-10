@@ -14,7 +14,7 @@ const App = () => {
   }
   return (
     <div
-      className={`h-full w-full mx-auto py-2 h-screen 
+      className={`w-full mx-auto py-2 h-screen 
     ${darkMode ? "dark" : ""}`}
     >
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
